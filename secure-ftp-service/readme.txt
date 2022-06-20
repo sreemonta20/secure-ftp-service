@@ -60,8 +60,8 @@ Open Package Manager Console
 - You can keep the several files in the sample server folder(\\public). See the downloaded files in the local folder and information regarding the downloaded
   files in the database
 
-- Download the Sample tiny server in zipped folder (tiny server) (2) 
-- Download the archieves folder in zipped folder (localfolder)  (3)
+- Download the Sample tiny server in zipped folder (tiny server) (https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/rebex_tiny_sftp_server.zip) (2) 
+- Download the archieves folder in zipped folder (localfolder) (https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/archieves.zip) (3)
 
 
 
