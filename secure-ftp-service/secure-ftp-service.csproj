@@ -43,4 +43,9 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

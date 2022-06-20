@@ -1,9 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
+using secure_ftp_service.Core.Models;
 using System.Globalization;
 using System.Reflection;
 
 namespace secure_ftp_service.Helpers
 {
+    /// <summary>
+    /// It is extension class or helper class, which can be used to throughout the app.
+    /// </summary>
     public class AssistantHelper
     {
         #region IsNotNull Methods
@@ -484,6 +488,7 @@ namespace secure_ftp_service.Helpers
             }
             return list;
         }
+
 
     }
 }

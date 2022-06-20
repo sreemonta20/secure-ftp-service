@@ -6,6 +6,10 @@ using System.Linq.Expressions;
 
 namespace secure_ftp_service.Core.Repositories
 {
+    /// <summary>
+    /// It is generic class which implements all the methods defined in the <see  cref="IGenericRepository{T}"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly SFTPDbContext _context;

@@ -4,6 +4,9 @@ using secure_ftp_service.Core.Requests;
 
 namespace secure_ftp_service.Core.AutoMapper
 {
+    /// <summary>
+    /// It defines the different class objects mapping.
+    /// </summary>
     public class MapperInitializer : Profile
     {
         public MapperInitializer()

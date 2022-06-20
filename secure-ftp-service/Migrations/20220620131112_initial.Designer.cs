@@ -12,7 +12,7 @@ using secure_ftp_service.Persistence.ORM;
 namespace secure_ftp_service.Migrations
 {
     [DbContext(typeof(SFTPDbContext))]
-    [Migration("20220618054456_initial")]
+    [Migration("20220620131112_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace secure_ftp_service.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("FileCreationime")
+                    b.Property<DateTime>("FileCreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FileName")

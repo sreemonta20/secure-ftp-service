@@ -2,6 +2,10 @@
 
 namespace secure_ftp_service.Core.Models
 {
+    /// <summary>
+    /// <para>It defines all the important attributes, which are needed to connect with sftp or ftp server and helps user to do various operations,</para> 
+    /// <para>as connect, disconnect, upload, download files and so on.</para>
+    /// </summary>
     public class RemoteSftpConfigModel
     {
         public string Type { get; set; } = ConstantSupplier.REMOTE_TYPE_SFTP;

@@ -6,6 +6,9 @@ using ConnectionInfo = Renci.SshNet.ConnectionInfo;
 
 namespace secure_ftp_service.Core.Services
 {
+    /// <summary>
+    /// It is generic class which implements all the methods defined in the <see  cref="IRemoteSftpService"/>
+    /// </summary>
     public class RemoteSftpService : RemoteSftpServiceBase, IRemoteSftpService
     {
         /// <summary>
@@ -125,12 +128,11 @@ namespace secure_ftp_service.Core.Services
             }
         }
 
-        public async Task<bool> DownloadFiles(string localFilePath, string remoteFilePath, List<string> serverFiles)
+        public async Task<bool> DownloadFilesAsync(string localFilePath, string remoteFilePath)
         {
             var files = SftpClient.ListDirectory(remoteFilePath);
             try
             {
-                //var combinedServerPath = Path.GetFullPath(Path.Join(@"C:\rebex_tiny_sftp_server\data", remoteFilePath));
                 foreach (var file in files)
                 {
                     string remoteFileName = file.Name;
@@ -141,9 +143,8 @@ namespace secure_ftp_service.Core.Services
                         var combinedServerPath = Path.Join(remoteFilePath, file.Name);
                         using (Stream fileStream = File.Create(combinedLocalPath))
                         {
-                            await Task.Delay(0);
-                            SftpClient.DownloadFile(combinedServerPath, fileStream);
-                            //return true;
+                            //await Task.Delay(0);
+                            await SftpClient.DownloadAsync(combinedServerPath, fileStream);
                         }
                     }
                 }
@@ -153,51 +154,25 @@ namespace secure_ftp_service.Core.Services
             {
                 throw new Exception($"{ConstantSupplier.EXCEPTION_MSG}{Ex.Message}{ConstantSupplier.NEW_LINE}{ConstantSupplier.EXCEPTION_INNER_MSG}{Ex.InnerException}.");
             }
-            //var files = SftpClient.ListDirectory(remoteFilePath);
-            //try
-            //{
-            //    foreach (var file in files)
-            //    {
-            //        string remoteFileName = file.Name;
-            //        if ((!file.Name.StartsWith(".")) && (!file.Name.EndsWith(".")))
-            //        {
-            //            var combinedPath = Path.Join(@localFilePath, file.Name);
-            //            using (Stream fileStream = File.Create(Path.Join(@localFilePath, file.Name)))
-            //            {
-            //                await SftpClient.DownloadAsync(@"" + remoteFilePath, fileStream);
-            //            }
-            //        }
-            //    }
-            //    return true;
-            //}
-            //catch (Exception Ex)
-            //{
-            //    throw new Exception($"{ConstantSupplier.EXCEPTION_MSG}{Ex.Message}{ConstantSupplier.NEW_LINE}{ConstantSupplier.EXCEPTION_INNER_MSG}{Ex.InnerException}.");
-            //}
-
-            //try
-            //{
-            //    foreach (var file in serverFiles)
-            //    {
-
-            //        var combinedPath = @""+localFilePath.ToString() +"\\"+Path.GetFileName(file).ToString();
-
-            //        using (Stream fileStream = File.Create(combinedPath))
-            //        {
-            //            await SftpClient.DownloadAsync(@"" + remoteFilePath, fileStream);
-            //        }
-            //    }
-            //    return true;
-            //}
-            //catch (Exception Ex)
-            //{
-            //    throw new Exception($"{ConstantSupplier.EXCEPTION_MSG}{Ex.Message}{ConstantSupplier.NEW_LINE}{ConstantSupplier.EXCEPTION_INNER_MSG}{Ex.InnerException}.");
-            //}
+            
         }
 
         public string ServerDetails()
         {
             return _serverDetails;
+        }
+
+        public async Task<List<ServerFileInfo>> getFileInfo(string path)
+        {
+            List<ServerFileInfo> creationTimeWiseServerFileList = new();
+            DirectoryInfo info = new DirectoryInfo(path);
+            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
+            foreach (FileInfo file in files)
+            {
+                await Task.Delay(0);
+                creationTimeWiseServerFileList.Add(new ServerFileInfo { FileName = file.Name, FileCreationTime = file.CreationTime });
+            }
+            return creationTimeWiseServerFileList;
         }
 
         public void Dispose()

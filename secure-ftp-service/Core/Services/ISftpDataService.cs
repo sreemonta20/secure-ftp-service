@@ -6,14 +6,9 @@ using System.Linq.Expressions;
 
 namespace secure_ftp_service.Core.Services
 {
-    //public interface ISftpDataService : IGenericRepository<SftpFileDetails>
-    //{
-    //    //Task<List<SftpFileDetails>> GetAllAsync();
-    //    //Task<SftpFileDetails?> GetAsync(int id);
-    //    //Task<int> AddRangeAsync(List<SftpFileDetails> entities);
-    //    //Task<SftpFileDetails> AddSinleAsync(SftpFileDetails entity);
-    //    //Task<SftpFileDetails?> FindAsync(Expression<Func<SftpFileDetails, bool>> match);
-    //}
+    /// <summary>
+    /// It is an interface which helps to create loosely coupled solution and gives the privilege to work with database.<br/>
+    /// </summary>
     public interface ISftpDataService
     {
         Task<SftpFileDetailsRes> GetAllFilesAsync();

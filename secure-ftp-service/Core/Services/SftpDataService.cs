@@ -8,6 +8,9 @@ using System.Linq.Expressions;
 
 namespace secure_ftp_service.Core.Services
 {
+    /// <summary>
+    /// It is generic class which implements all the methods defined in the <see  cref="ISftpDataService"/>
+    /// </summary>
     public class SftpDataService : ISftpDataService
     {
         private readonly ILogService _logService;

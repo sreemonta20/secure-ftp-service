@@ -15,7 +15,7 @@ namespace secure_ftp_service.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FileName = table.Column<string>(type: "text", nullable: false),
-                    FileCreationime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FileCreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     SourceFilePath = table.Column<string>(type: "text", nullable: false),
                     DestinationFilePath = table.Column<string>(type: "text", nullable: false)
                 },

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace secure_ftp_service.Helpers
 {
+    /// <summary>
+    /// This class contains all the constant values.
+    /// </summary>
     public class ConstantSupplier
     {
         /// <summary>
