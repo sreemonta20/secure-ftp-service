@@ -92,7 +92,16 @@ namespace secure_ftp_service.Helpers
         public const string NO_NEW_FILES = "No new files found";
         public const string NO_FILES_FOUND_SERVER_PATH = "No new files found in server path";
         public const string CONTROLLER_ACTION_ERROR_MSG = "Something went wrong in the {0} and exception message is {1}";
+        public const string BACKGROUND_WORK_ERROR_MSG = "Something went wrong in the {0} and exception message is {1}";
         public const string BASE_PATH = "D:\\Personal Work\\Personal Projects\\GitRepo\\sftp-service\\rebex_tiny_sftp_server\\data";
+
+        /// <summary>
+        /// Api related all constants from start to finish.
+        /// </summary>
+        public const string HTTP_CLIENT_LOGICAL_NAME = "SFTPclient";
+        public const string API_GET_DOWNLOAD_URL = "";
+        public const string HTTP_HEADERS_CONTENT_TYPE_NAME = "Accept";
+        public const string HTTP_HEADERS_CONTENT_TYPE_VALUE = "application/json";
 
     }
 }

@@ -88,7 +88,17 @@ namespace secure_ftp_service.Helpers
         {
             return val > 0;
         }
+
+        public Boolean MoreThanZero(int? val)
+        {
+            return val > 0;
+        }
         public Boolean MoreThanOne(int val)
+        {
+            return val > 1;
+        }
+
+        public Boolean MoreThanOne(int? val)
         {
             return val > 1;
         }

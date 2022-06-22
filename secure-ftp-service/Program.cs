@@ -76,6 +76,7 @@ try
     builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
       loggerConfiguration.ReadFrom
       .Configuration(hostingContext.Configuration));
+    builder.Services.AddHostedService<BackgroundHostedService>();
     builder.Host.UseContentRoot(Directory.GetCurrentDirectory());
     
     // Add Automapper in case if we needed.
@@ -88,11 +89,26 @@ try
     builder.Services.AddTransient<IRemoteSftpService, RemoteSftpService>();
     builder.Services.AddTransient<IGenericRepository<SftpFileDetails>, GenericRepository<SftpFileDetails>>();
     builder.Services.AddTransient<ISftpDataService, SftpDataService>();
+    //builder.Services.AddSingleton<IWorkExecutor, WorkExecutor>();
 
-    var app = builder.Build();
+    
 
     // To get the support of legacy datetime in the postgresql (apart from utc.now()
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+    #region Register IHttpClientFactory into the service
+    // Registering IHttpClientFactory in the DI container into the service with the extension method AddHttpClient
+    // (AddHttpClient method registers the internal DefaultHttpClientFactory class to be used as a singleton for the interface IHttpClientFactory).
+    // During the registration of IHttpClientFactory ino the service, The HttpClient can be configured with Polly's policies.
+    var apimodel = builder.Configuration.GetSection(nameof(ApiSettingsModel)).Get<ApiSettingsModel>();
+    builder.Services.AddHttpClient<IWorkExecutor, WorkExecutor>(ConstantSupplier.HTTP_CLIENT_LOGICAL_NAME, client =>
+    {
+        client.BaseAddress = new Uri(apimodel.APIBaseURL);
+        client.DefaultRequestHeaders.Clear();
+        client.DefaultRequestHeaders.Add(ConstantSupplier.HTTP_HEADERS_CONTENT_TYPE_NAME, ConstantSupplier.HTTP_HEADERS_CONTENT_TYPE_VALUE);
+    }).SetHandlerLifetime(TimeSpan.FromMinutes(5));
+    #endregion
+    var app = builder.Build();
     #endregion
 
     //// Configuring request pipeline, which consists of middlewares.
