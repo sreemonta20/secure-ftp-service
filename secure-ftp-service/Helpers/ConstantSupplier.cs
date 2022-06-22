@@ -99,9 +99,10 @@ namespace secure_ftp_service.Helpers
         /// Api related all constants from start to finish.
         /// </summary>
         public const string HTTP_CLIENT_LOGICAL_NAME = "SFTPclient";
-        public const string API_GET_DOWNLOAD_URL = "";
+        public const string API_GET_DOWNLOAD_URL = "/api/SftpService/downloadsftpfiles";
         public const string HTTP_HEADERS_CONTENT_TYPE_NAME = "Accept";
         public const string HTTP_HEADERS_CONTENT_TYPE_VALUE = "application/json";
+        public const string CORSS_POLICY_NAME = "AllowRedirectOrigin";
 
     }
 }

@@ -3,6 +3,9 @@ using secure_ftp_service.Core.Models;
 
 namespace secure_ftp_service.Core.Responses
 {
+    /// <summary>
+    /// It carries the service response of sftp service operation.
+    /// </summary>
     public class SftpFileDetailsRes
     {
         public bool Status { get; set; }

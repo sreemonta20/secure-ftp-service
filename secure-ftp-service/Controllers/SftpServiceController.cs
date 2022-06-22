@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using secure_ftp_service.Core.Models;
@@ -11,6 +12,7 @@ namespace secure_ftp_service.Controllers
 {
     [Route(ConstantSupplier.ATTRIBUTE_ROUTE)]
     [ApiController]
+    [EnableCors(ConstantSupplier.CORSS_POLICY_NAME)]
     public class SftpServiceController : ControllerBase
     {
         /// <summary>

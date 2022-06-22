@@ -11,13 +11,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 
-//// Reading appsettings 
+// Reading appsettings 
 IConfiguration config = new ConfigurationBuilder()
                   .SetBasePath(Directory.GetCurrentDirectory())
                   .AddJsonFile(ConstantSupplier.APP_SETTINGS_FILE_NAME)
                   .Build();
 
-//// Setup a static Log.Logger instance
+// Setup a static Log.Logger instance
 Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(config)
             .Enrich.FromLogContext()
@@ -27,8 +27,8 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
-    //// The below region just to define the service intoduction or title
-    #region Service Title Introduction
+    // This defined the service introduction or title in logger
+
     StringBuilder sb = new StringBuilder();
     sb.AppendLine();
     sb.AppendLine(ConstantSupplier.LOG_INFO_APPEND_LINE_FIRST);
@@ -37,24 +37,19 @@ try
     sb.AppendLine(ConstantSupplier.LOG_INFO_APPEND_LINE_FOURTH_COPYRIGHT);
     sb.AppendLine(ConstantSupplier.LOG_INFO_APPEND_LINE_END);
     Log.Logger.Information(sb.ToString());
-    #endregion
 
-    //// Web hosting is started and it is captured in the log.
+    // Web hosting is started and it is captured in the log.
     Log.Information(ConstantSupplier.LOG_INFO_WEB_HOST_START_MSG);
     var builder = WebApplication.CreateBuilder(args);
     builder.WebHost.UseKestrel();
 
-    //// Configure Services started. It is separated in below region.
-    #region Add services to the container (ConfigureServices(IServiceCollection services) Method from the last .NET 5)
+    //------Configure Services started. Add services to the container (ConfigureServices(IServiceCollection services) Method from the last .NET 5).----
 
-    // PostgreSql service addeds
-    #region Registers the given security db context as a service into the services
-
+    // PostgreSql service added into the container
+    
     builder.Services.AddMvc();
     builder.Services.AddEntityFrameworkNpgsql().AddDbContext<SFTPDbContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString(ConstantSupplier.APP_CONFIG_SFTP_DB_CONN_NAME)));
-
-    #endregion
 
     // In case of null property, Add newtonsoftjon into the services container.
     builder.Services.AddControllers().AddJsonOptions(options =>
@@ -64,55 +59,39 @@ try
     {
         o.SerializerSettings.ContractResolver = new DefaultContractResolver();
     });
-    
+
+    builder.Services.AddCors(c =>
+    {
+        c.AddPolicy(ConstantSupplier.CORSS_POLICY_NAME, options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    });
+
     //Swagger added
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    
-
     //Set serilog as a logging provider.
     builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
       loggerConfiguration.ReadFrom
       .Configuration(hostingContext.Configuration));
-    builder.Services.AddHostedService<BackgroundHostedService>();
     builder.Host.UseContentRoot(Directory.GetCurrentDirectory());
     
     // Add Automapper in case if we needed.
-    #region AutoMappers
     builder.Services.AddAutoMapper(typeof(MapperInitializer));
-    #endregion
 
     // Custom services injected.
     builder.Services.AddTransient<ILogService, LogService>();
     builder.Services.AddTransient<IRemoteSftpService, RemoteSftpService>();
     builder.Services.AddTransient<IGenericRepository<SftpFileDetails>, GenericRepository<SftpFileDetails>>();
     builder.Services.AddTransient<ISftpDataService, SftpDataService>();
-    //builder.Services.AddSingleton<IWorkExecutor, WorkExecutor>();
-
-    
 
     // To get the support of legacy datetime in the postgresql (apart from utc.now()
     AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-    #region Register IHttpClientFactory into the service
-    // Registering IHttpClientFactory in the DI container into the service with the extension method AddHttpClient
-    // (AddHttpClient method registers the internal DefaultHttpClientFactory class to be used as a singleton for the interface IHttpClientFactory).
-    // During the registration of IHttpClientFactory ino the service, The HttpClient can be configured with Polly's policies.
-    var apimodel = builder.Configuration.GetSection(nameof(ApiSettingsModel)).Get<ApiSettingsModel>();
-    builder.Services.AddHttpClient<IWorkExecutor, WorkExecutor>(ConstantSupplier.HTTP_CLIENT_LOGICAL_NAME, client =>
-    {
-        client.BaseAddress = new Uri(apimodel.APIBaseURL);
-        client.DefaultRequestHeaders.Clear();
-        client.DefaultRequestHeaders.Add(ConstantSupplier.HTTP_HEADERS_CONTENT_TYPE_NAME, ConstantSupplier.HTTP_HEADERS_CONTENT_TYPE_VALUE);
-    }).SetHandlerLifetime(TimeSpan.FromMinutes(5));
-    #endregion
     var app = builder.Build();
-    #endregion
 
-    //// Configuring request pipeline, which consists of middlewares.
-    #region Configure the HTTP request pipeline
+
+    //--------- Configuring the HTTP request pipeline, which consists of middlewares.---------------
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
@@ -121,11 +100,16 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseRouting();
+
     app.UseAuthorization();
 
-    app.MapControllers();
-    #endregion
+    app.UseSerilogRequestLogging();
 
+    app.UseCors(ConstantSupplier.CORSS_POLICY_NAME);
+
+    app.MapControllers();
+    
     app.Run();
 }
 catch (Exception Ex)
