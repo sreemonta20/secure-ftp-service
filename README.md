@@ -58,7 +58,7 @@ Open Package Manager Console
 - Click the start button on the server soft.
 - Run `dotnet restore` in the package manager console of the downloaded projects. Then clear, build, and run the sftp service project.
 - Run `Add-Migration initial` && `update-database`. And build the sftp service roject once again if it is necessary.
-- Run the ***service connect scheduler project, which is basically a background tasker and it does connect the sftp service project which ultimately connect to sftp server and download the files if it found any new one not the older one.***
+- Run the ***service connect scheduler project, which is basically a background tasker and it does connect the sftp service every 1 minute, which ultimately connect to sftp server and download the files if it found any new one not the older one.***
 - You can keep the several files in the sample server folder(\\public). See the downloaded files in the local folder and information regarding the downloaded
   files in the database
 
