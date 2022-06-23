@@ -36,7 +36,7 @@ Open Package Manager Console
 
 Open Package Manager Console
 
-- Run `enable-migrations`  // Enable-Migrations is obsolete now for .NET 6. Start from the below
+- <del>Run enable-migrations</del>  // Enable-Migrations is obsolete now for .NET 6. Start from the below
 - Run `Add-Migration initial`
 - Run `update-database`
 
