@@ -159,6 +159,7 @@ namespace secure_ftp_service.Controllers
                 return Problem(JsonConvert.SerializeObject(new SftpFileDetailsRes(false, StatusCodes.Status500InternalServerError, Ex.Message),
                 Formatting.Indented));
             }
+
         }
 
         
