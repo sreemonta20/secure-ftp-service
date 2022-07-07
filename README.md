@@ -36,32 +36,34 @@ Open Package Manager Console
 
 Open Package Manager Console
 
-- Run `enable-migrations`  // Enable-Migrations is obsolete now for .NET 6. Start from the below
+- <del>Run enable-migrations</del>  // Enable-Migrations is obsolete now for .NET 6. Start from the below
 - Run `Add-Migration initial`
 - Run `update-database`
 
 ### Procedure to run the project (Example)  ****
 
-- Download the project from github (https://github.com/sreemonta20/secure-ftp-service.git) (1)
-- Keep the project in a suitable location in your computer 
-- Download Rebex Tiny SFTP Server (free) from the link https://www.rebex.net/tiny-sftp-server/#download
+- Download the sftp service project from github [link](https://github.com/sreemonta20/secure-ftp-service.git) (1)
+- Download the service scheduler project from the github [link](https://github.com/sreemonta20/service-scheduler) (2)
+- Keep the above two projects in a suitable location in your computer.
+- Download Rebex Tiny SFTP Server (free) from the [link](https://www.rebex.net/tiny-sftp-server/#download)
 - Keep the downloaded rebex tiny server software in a suitable location of your computer.
 - Create a folder (named "public") inside the data folder of rebex tiny server software. Which will be act as a server folder. Where we can keep files.
 - Create a archieves named folder in a suitable location of your computer. This will be act as a local folder to receieve the files from the server folder.
-- Now click on the tiny server icon, copy all the attrbutes such as host ip, port, username, password, and other details(if needed)
+- Now click on the tiny server icon, copy all the attrbutes such as host ip, port, username, password, and other details(if needed).
 - Now configure appsettings.json file where you can paste all the values you copied previously. 
   Also remember the mention or paste the 3 path locations -
   1. LocalPathDirectory: the path location of your local folder (such as archieves or any other folder name).
   2. ServerPathBaseDirectory:  Base path location (till the data folder , which is created by by default by tiny server soft).
   3. ServerPathDirectory: such as public folder location. (ex: \\public).
 - Click the start button on the server soft.
-- Run `dotnet restore` in the package manager console of the downloaded project. Then clear, build, and run the project.
-- Run `Add-Migration initial` && `update-database`. And build once again if it is necessary.
+- Run `dotnet restore` in the package manager console of the downloaded projects. Then clear, build, and run the sftp service project.
+- Run `Add-Migration initial` && `update-database`. And build the sftp service roject once again if it is necessary.
+- Run the ***service connect scheduler project, which is basically a background tasker and it does connect the sftp service every 1 minute, which ultimately connect to sftp server and download the files if it found any new one not the older one.***
 - You can keep the several files in the sample server folder(\\public). See the downloaded files in the local folder and information regarding the downloaded
   files in the database
 
-- Download the Sample tiny server in zipped folder (tiny server) (https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/rebex_tiny_sftp_server.zip) (2)  
-- Download the archieves folder in zipped folder (localfolder) (https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/archieves.zip) (3)
+- Download the Sample tiny server in zipped folder [tiny server](https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/rebex_tiny_sftp_server.zip) (3)  
+- Download the archieves folder in zipped folder [localfolder](https://github.com/sreemonta20/tiny-server-and-archieves/blob/main/archieves.zip) (4)
 
 
 
