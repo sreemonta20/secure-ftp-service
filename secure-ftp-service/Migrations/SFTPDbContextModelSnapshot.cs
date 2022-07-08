@@ -33,7 +33,7 @@ namespace secure_ftp_service.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("FileCreationTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FileName")
                         .IsRequired()
